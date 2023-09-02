@@ -13,7 +13,14 @@ module.exports = (connection, DataTypes) => {
             validate: {
                 notEmpty: true
             }
-        }
+        },
+        // type: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     validate: {
+        //         notEmpty: true
+        //     }
+        // }
     };
 
     const TransactionModel = connection.define('Transaction', schema);

@@ -13,4 +13,12 @@ router
   .patch(companyControllers.updateById)
   .delete(companyControllers.deleteById)
 
+router
+  .route('/:companyId/transactions')
+  .get(companyControllers.getTransactions)
+
+router
+  .route('/:companyId/shareholders')
+  .get(companyControllers.getShareholders)
+
 module.exports = router;

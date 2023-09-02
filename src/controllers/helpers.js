@@ -15,12 +15,12 @@ const getModel = (model) => {
 
 const getInclude = (model) => {
   const includes = {
-    company: [Share, Shareholder],
-    person: Shareholder,
-    shareholder: Transaction,
-    share: Transaction,
-    transaction: TransactionType,
-    transactionType: null
+    company: { all: true, nested: true },
+    person: { all: true, nested: true },
+    shareholder: { all: true, nested: true },
+    share: { all: true, nested: true },
+    transaction: { all: true, nested: true },
+    transactionType: { all: true, nested: true }
   };
 
   return includes[model];
@@ -38,6 +38,20 @@ const createItem = (model, res, item) => {
     res.status(400).json({ error: errorMessages });
   });
 };
+
+const createItemPlusShareholder = (model, res, item) =>{
+  const Model = getModel(model);
+
+  return Model.create(item).then((newItem) => {
+    if (model === 'person') {
+      Shareholder.create({ PersonId: newItem.id })
+      .then((newShareholder) => res.status(201).json(newShareholder));
+    } else if (model === 'company') {
+      Shareholder.create({ CompanyId: newItem.id })
+      .then((newShareholder) => res.status(201).json(newShareholder));
+    }
+  });
+}
 
 const getAllItems = (model, res) => {
   const Model = getModel(model);
@@ -92,6 +106,7 @@ const deleteItem = (model, res,  id) => {
 
 module.exports = {
   createItem,
+  createItemPlusShareholder,
   getAllItems,
   getItemById,
   updateItem,

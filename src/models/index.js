@@ -26,10 +26,16 @@ const setupDatabase = () => {
     const TransactionType = TransactionTypeModel(connection, Sequelize);
 
     Company.hasMany(Share);
+    Share.belongsTo(Company);
     Share.hasMany(Transaction);
+    Transaction.belongsTo(Share);
     Shareholder.hasMany(Transaction);
+    Transaction.belongsTo(Shareholder);
     Company.hasMany(Shareholder);
     Person.hasMany(Shareholder);
+    Shareholder.belongsTo(Person);
+    Shareholder.belongsTo(Company);
+    Transaction.belongsTo(TransactionType);
     TransactionType.hasMany(Transaction);
 
     connection.sync({ alter: true });
